@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8">
+    <title>Enroll in course</title>
+</head>
+<body>
+<a href="/student/{{.Id}}">Back</a>
+<p>List of courses</p>
+
+<form id ="form">
+    {{ range $key, $value := .Data }}
+    <input id="{{$value.Id}}" name = "check" type="checkbox">{{ $value.Name}}: {{ $value.CourseId }}</input><br/>
+    {{ end }}
+    <br/>
+    <input type ="submit" id ="button" value ="Enroll"  />
+</form>
+
+<script>
+    window.onload = function () {
+        document.getElementById("button").addEventListener("click",submitForm)
+    }
+
+    function submitForm(event) {
+        event.preventDefault();
+        var checkedBoxes = document.querySelectorAll('input[name=check]:checked');
+        console.log(checkedBoxes);
+        var activeId = [];
+        for (var i = 0; i < checkedBoxes.length; ++i) {
+            var check = checkedBoxes[i];
+            activeId.push(parseInt(check.getAttribute("id")));
+        }
+        console.log(activeId);
+        var obj = {};
+        obj.student = 1;
+        obj.courses = activeId;
+        var jsonData = JSON.stringify(obj);
+        console.log(jsonData)
+        var xhr = new XMLHttpRequest;
+        xhr.open('POST', '/api/1/enroll/{{.Id}}', true);
+        xhr.send(jsonData);
+    }
+</script>
+</body>
+</html>

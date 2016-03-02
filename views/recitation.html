@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recitation manager for {{.Title}}</title>
+</head>
+<body>
+<a href ='/admin/course/'>Back</a>
+<h1>Recitations for {{.Title}}</h1>
+<form>
+    <div><p>Recitation name:</p><input id="name" type="text"/><br/></div>
+    <div><p>Track:</p><input id ='track' type="text"/><br/></div>
+    <div><p>Problems:</p><input id ='problems' type="number"/></div>
+    <div id = "problems_list">
+        <p>Problem</p><br/>
+
+    </div>
+    <div><input id="button" type="button" value="Save"></div>
+</form>
+<p>List of recitations</p>
+<ul>
+    {{ range $key, $value := .Recitations }}
+    <li>{{ $value.Name }},{{$value.Track}}</a></li>
+    {{ end }}
+</ul>
+
+<script>
+    window.onload = function () {
+        var problem = document.getElementById("problems");
+        problem.onchange = calculateProblemRows;
+        document.getElementById("button").onclick = submitForm;
+    }
+
+    function submitForm() {
+        //collect all the data...
+        var name = document.getElementById("name").value;
+        var track = document.getElementById("track").value;
+        var nrProblems = document.getElementById("problems").value;
+        var courseId = {{.Id}};
+        var obj = {};
+        obj.name = name;
+        obj.track = track;
+        obj.nr_problems = nrProblems;
+        obj.course_id = courseId;
+        var plist = document.getElementById("problems_list");
+        var prob = []
+        for (var step = 0; step < nrProblems;step++){
+            var tmp = document.getElementById("problem-" + (step +1));
+            var task = tmp.childNodes[1].value;
+            var com = tmp.childNodes[2].value;
+            console.log(task+":"+com);
+            probl = {};
+            probl.id = (step+1);
+            probl.task = task;
+            probl.com = com;
+            prob.push(probl);
+        }
+
+        obj.problems = prob;
+
+
+        var jsonData = JSON.stringify(obj);
+        console.log(jsonData)
+        var xhr = new XMLHttpRequest;
+        xhr.open('POST', '/api/1/recitation', true);
+        xhr.send(jsonData);
+        window.location.reload();
+    }
+
+
+    function calculateProblemRows() {
+        if (document.getElementById("problems").value < 1){
+            return
+        }
+        var container = document.getElementById("problems_list");
+        //first remove old
+        while(container.firstChild){
+            container.removeChild(container.firstChild)
+        }
+
+        var count = document.getElementById("problems").value
+
+        for (var step = 0; step<count; step++) {
+            var containerProb = document.createElement("div");
+            var name = document.createElement("p")
+            name.innerHTML = "Problem:" + (step +1);
+            var subproblems = document.createElement("input");
+            var compulsary = document.createElement("input");
+
+
+            subproblems.placeholder = "Enter number of tasks"
+            compulsary.placeholder = "Enter number of compulsory tasks"
+            subproblems.type = "number";
+            compulsary.type = "number"
+
+            containerProb.setAttribute("id","problem-"+(step +1));
+            containerProb.appendChild(name);
+            containerProb.appendChild(subproblems);
+            containerProb.appendChild(compulsary);
+            containerProb.appendChild(document.createElement("br"));
+            container.appendChild(containerProb);
+        }
+    }
+</script>
+</body>
+</html>

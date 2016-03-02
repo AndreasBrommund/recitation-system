@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Student</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    </head>
+    <body>
+    <h1>Student Login</h1>
+    <p>Login</p>
+    <form>
+        <p>Name</p>
+        <input type="text" id="name"/><br/>
+        <p>Password</p>
+        <input type = "password" id="pass"/><br/>
+        <input id="login_button" type="submit" value="Login"/>
+    </form>
+    <br/>
+    <p>Register as Student</p>
+    <form>
+        <p>Name</p>
+        <input type="text" id = "new_name"/><br>
+        <p>Password</p>
+        <input type="password" id = "new_password"/><br/>
+        <button id="create_acc">Create account</button>
+    </form>
+    <script>
+        window.onload = function () {
+            document.getElementById("create_acc").addEventListener("click",newUser);
+            document.getElementById("login_button").addEventListener("click",login);
+        }
+
+        function login(event){
+            event.preventDefault();
+            var name = document.getElementById("name").value;
+            var password = document.getElementById("pass").value;
+            var obj = {};
+            obj.name = name;
+            obj.password = password;
+            var jsonData = JSON.stringify(obj);
+
+            var xhr = new XMLHttpRequest;
+            xhr.open('POST',"/api/1/student/login",true)
+            xhr.send(jsonData);
+            
+            
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200){
+                    console.log(xhr.responseText);
+                    resp = JSON.parse(xhr.responseText);
+                    window.location = "/student/"+resp["id"];
+                }
+            }
+        }
+        function newUser(event){
+            event.preventDefault();
+            var name = document.getElementById("new_name").value;
+            var code = document.getElementById("new_password").value;
+            var obj = {};
+            obj.name = name;
+            obj.password = code;
+            var jsonData = JSON.stringify(obj);
+            console.log(jsonData)
+            var xhr = new XMLHttpRequest;
+            xhr.open('POST', '/api/1/student', true);
+            xhr.send(jsonData);
+            window.location.reload();
+        }
+
+
+
+
+    </script>
+    </body>
+</html>

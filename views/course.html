@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Course</title>
+</head>
+<body>
+    <h1>Admin/Course site</h1>
+    <p>List of courses</p>
+    <ul>
+        {{ range $key, $value := .Data }}
+        <li><a href="/admin/course/{{ $value.Id }}?title={{$value.CourseId}}">{{ $value.Name}}: {{ $value.CourseId }}</a></li>
+        {{ end }}
+    </ul>
+
+    <form>
+        <div><p>Course name:</p><input id="name" type="text"/><br/></div>
+        <div><p>Course code:</p><input id ='code' type="text"/><br/></div>
+        <div><input id="button" type="submit" value="Save"></div>
+    </form>
+    <script>
+        window.onload = function () {
+            document.getElementById("button").addEventListener("click",submitForm)
+        }
+
+        function submitForm(event){
+            event.preventDefault();
+            var name = document.getElementById("name").value;
+            var code = document.getElementById("code").value;
+            document.getElementById("name").value = "";
+            document.getElementById("code").value = "";
+            var obj = {};
+            obj.name = name;
+            obj.code = code;
+            var jsonData = JSON.stringify(obj);
+            console.log(jsonData)
+            var xhr = new XMLHttpRequest;
+            xhr.open('POST', '/api/1/course', true);
+            xhr.send(jsonData);
+            window.location.reload();
+        }
+    </script>
+</body>
+</html>
