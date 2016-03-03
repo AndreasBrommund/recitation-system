@@ -43,5 +43,7 @@ func initRoutes() (routes Routes) {
 	routes.Get("Student profile site", "/student/:id",
 		middleware.Append(authHandler).ThenFunc(studentProfile))
 
+	routes.Get("Student recitation site", "/student/:id/recitations/:cid",
+		middleware.Append(authHandler).ThenFunc(studentRecitation))
 	return
 }

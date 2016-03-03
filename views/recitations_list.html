@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recitations for {{.CourseName}}</title>
+</head>
+<body>
+<p>All recitations for {{.CourseName}}</p>
+<ul>
+    {{ range $key, $value := .Data }}
+    <li><a href="/student/{{$.StudentId}}/recitations/{{$.CourseId}}/solutions/{{.Id}}">{{ $value.Name}}</a></li>
+    {{ end }}
+</ul>
+
+</body>
+</html>

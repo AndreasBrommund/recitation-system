@@ -96,6 +96,27 @@ func studentProfile(w http.ResponseWriter, r *http.Request) {
 		Data []models.Course
 	}{student.Name, student.Id, courses})
 }
+
+func studentRecitation(w http.ResponseWriter, r *http.Request) {
+	ps := context.Get(r, "params").(httprouter.Params)
+	studentId := ps.ByName("id")
+	courseId := ps.ByName("cid")
+	var recitaitons []models.Recitation
+	var course models.Course
+	if id, err := strconv.Atoi(courseId); err == nil {
+		recitaitons = database.GetRecitations(id)
+		course = database.ReadCourse(id)
+	} else {
+		panic(err)
+	}
+
+	renderTemplate(w, "recitations_list", struct {
+		Data       []models.Recitation
+		CourseName string
+		CourseId   int
+		StudentId  string
+	}{recitaitons, course.Name, course.Id, studentId})
+}
 func enrollStudent(w http.ResponseWriter, r *http.Request) {
 	ps := context.Get(r, "params").(httprouter.Params)
 	id := ps.ByName("id")

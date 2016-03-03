@@ -19,6 +19,12 @@ func (this *Database) AddCourse(course *models.Course) {
 	}
 }
 
+func (this *Database) ReadCourse(id int) (course models.Course) {
+	this.conn.QueryRow("SELECT * from recitation.course "+
+		"WHERE id = $1", id).Scan(&course.Id, &course.Name, &course.CourseId)
+	return
+}
+
 func (this *Database) GetCourses() (courses []models.Course) {
 	rows, err := this.conn.Query("SELECT * FROM recitation.course")
 	if err != nil {

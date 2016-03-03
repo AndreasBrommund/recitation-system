@@ -9,11 +9,11 @@
 <p>List of coursed that your are enrolled in:</p>
 <ul>
     {{ range $key, $value := .Data }}
-    <li><a href="/{{ $value.Id }}">{{ $value.Name}}: {{ $value.CourseId }}</a></li>
+    <li><a href="{{$.StudentId}}/recitations/{{ $value.Id }}">{{ $value.Name}}: {{ $value.CourseId }}</a></li>
     {{ end }}
 </ul>
 
-<a href ="/enroll/{{.Id}}"/>Enroll in courses</a>
+<a href ="/enroll/{{.StudentId}}"/>Enroll in courses</a>
 
 
 </body>
