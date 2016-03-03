@@ -39,7 +39,7 @@ func apiCourseList(w http.ResponseWriter, r *http.Request) {
 
 func apiEnrollStudent(w http.ResponseWriter, r *http.Request) {
 	data := Body(r).(*models.Enrollment)
-	log.Println(data)
+	database.EnrollStudent(data)
 }
 
 func apiCreateStudent(w http.ResponseWriter, r *http.Request) {
@@ -89,10 +89,12 @@ func studentProfile(w http.ResponseWriter, r *http.Request) {
 	name := session.Values["Name"].(string)
 	password := session.Values["Password"].(string)
 	student := database.ReadStudent(name, password)
+	courses := database.ReadCourseStudent(student.Id)
 	renderTemplate(w, "profile", struct {
 		Name string
 		Id   int
-	}{student.Name, student.Id})
+		Data []models.Course
+	}{student.Name, student.Id, courses})
 }
 func enrollStudent(w http.ResponseWriter, r *http.Request) {
 	ps := context.Get(r, "params").(httprouter.Params)
