@@ -18,7 +18,7 @@
 <script>
     window.onload = function () {
         document.getElementById("button").addEventListener("click",submitForm)
-    }
+    };
 
     function submitForm(event) {
         event.preventDefault();
@@ -31,10 +31,10 @@
         }
         console.log(activeId);
         var obj = {};
-        obj.student = 1;
+        obj.student = {{.Id}};
         obj.courses = activeId;
         var jsonData = JSON.stringify(obj);
-        console.log(jsonData)
+        console.log(jsonData);
         var xhr = new XMLHttpRequest;
         xhr.open('POST', '/api/1/enroll/{{.Id}}', true);
         xhr.send(jsonData);
