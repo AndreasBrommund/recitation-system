@@ -18,7 +18,7 @@ func initRoutes() (routes Routes) {
 		middleware.Append(BodyHandler(models.Course{})).ThenFunc(apiCourseAdd))
 
 	routes.Post("Student/Course enrollment", "/api/1/enroll/:id",
-		middleware.Append(BodyHandler(models.Enrollment{})).ThenFunc(apiEnrollStudent))
+		middleware.Append(BodyHandler(models.Enrollment{})).Append(authHandler).ThenFunc(apiEnrollStudent))
 
 	routes.Post("Add recitation", "/api/1/recitation",
 		middleware.Append(BodyHandler(models.RecitationSub{})).ThenFunc(apiRecitationAdd))
