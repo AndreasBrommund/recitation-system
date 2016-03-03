@@ -35,3 +35,14 @@ type Enrollment struct {
 	Student int   `json:"student"`
 	Courses []int `json:"courses"`
 }
+
+type DisplayProblem struct {
+	Id          int
+	ProblemNr   int
+	Compulsory  int
+	Subproblems []Subproblem
+}
+
+type Subproblem struct {
+	Letter string
+}

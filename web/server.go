@@ -21,6 +21,7 @@ var templates = template.Must(
 		"views/enroll.html",
 		"views/profile.html",
 		"views/recitations_list.html",
+		"views/solutions.html",
 		"views/student.html"))
 
 func StartServer(port string) {

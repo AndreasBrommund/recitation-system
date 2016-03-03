@@ -91,9 +91,9 @@ func studentProfile(w http.ResponseWriter, r *http.Request) {
 	student := database.ReadStudent(name, password)
 	courses := database.ReadCourseStudent(student.Id)
 	renderTemplate(w, "profile", struct {
-		Name string
-		Id   int
-		Data []models.Course
+		Name      string
+		StudentId int
+		Data      []models.Course
 	}{student.Name, student.Id, courses})
 }
 
@@ -116,6 +116,21 @@ func studentRecitation(w http.ResponseWriter, r *http.Request) {
 		CourseId   int
 		StudentId  string
 	}{recitaitons, course.Name, course.Id, studentId})
+}
+
+func studenSolutions(w http.ResponseWriter, r *http.Request) {
+	ps := context.Get(r, "params").(httprouter.Params)
+	recitationId := ps.ByName("rid")
+	rid, err := strconv.Atoi(recitationId)
+	if err != nil {
+		panic(err)
+	}
+	data := database.ReadProblems(rid)
+
+	renderTemplate(w, "solutions", struct {
+		Data []models.DisplayProblem
+	}{data})
+
 }
 func enrollStudent(w http.ResponseWriter, r *http.Request) {
 	ps := context.Get(r, "params").(httprouter.Params)

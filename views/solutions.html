@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Solutions</title>
+</head>
+<body>
+<p>Please select all the problems that you have solved.</p>
+<ul>
+    <form>
+    {{ range $key, $value := .Data }}
+    <li>Problem: {{ $value.ProblemNr}} C{{$value.Compulsory}}</li>
+    {{range $k,$v := $value.Subproblems}}
+        <input id = {{$value.Id}} name="check" type="checkbox">{{$v.Letter}}
+        {{end}}
+    {{ end }}
+
+        <br/>
+
+        <input type = "submit" id="button" value="I solved these!"/>
+    </form>
+</ul>
+</body>
+</html>
