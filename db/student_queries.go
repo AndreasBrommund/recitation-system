@@ -37,3 +37,29 @@ func (this *Database) ReadStudent(name, password string) (student models.Student
 	}
 	return
 }
+
+func (this *Database) ReadCourseStudent(id int) (courses []models.Course) {
+	rows, err := this.conn.Query("SELECT id,name,code "+
+		"from recitation.course JOIN recitation.takes on "+
+		"id = course WHERE student =$1;", id)
+	if err != nil {
+		panic(err)
+	}
+	for rows.Next() {
+		var tmp models.Course
+		rows.Scan(&tmp.Id, &tmp.Name, &tmp.CourseId)
+		courses = append(courses, tmp)
+	}
+	return
+}
+
+func (this *Database) EnrollStudent(enrollment *models.Enrollment) {
+	for _, value := range enrollment.Courses {
+		_, err := this.conn.Exec("INSERT INTO "+
+			"recitation.takes(student,course) VALUES($1,$2);", enrollment.Student, value)
+		if err != nil {
+			log.Println("something wrong enrolling student")
+			panic(err)
+		}
+	}
+}
