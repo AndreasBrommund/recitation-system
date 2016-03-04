@@ -8,17 +8,58 @@
 <p>Please select all the problems that you have solved.</p>
 <ul>
     <form>
-    {{ range $key, $value := .Data }}
-    <li>Problem: {{ $value.ProblemNr}} C{{$value.Compulsory}}</li>
-    {{range $k,$v := $value.Subproblems}}
-        <input id = {{$value.Id}} name="check" type="checkbox">{{$v.Letter}}
-        {{end}}
-    {{ end }}
+        {{ range $key, $value := .Data }}
+        <li>Problem: {{ $value.ProblemNr}}</li>
+            <p>You have to do at least {{$value.Compulsory}} to get points</p>
+            {{range $k,$v := $value.Subproblems}}
+                <label><input id = {{$value.Id}} name="check" type="checkbox">{{$v.Letter}}</label>
+                {{end}}
+            </br>
+            </br>
+
+        {{ end }}
 
         <br/>
 
         <input type = "submit" id="button" value="I solved these!"/>
     </form>
-</ul>
+  </ul>
+<script>
+    window.onload = function() {
+        document.getElementById("button").addEventListener("click",submit);
+    };
+
+    function submit(event){
+        event.preventDefault();
+        var checkedBoxes = document.querySelectorAll("input[name=check]:checked");
+        var activeId = {};
+        for (var i = 0; i < checkedBoxes.length; ++i) {
+            var check = checkedBoxes[i];
+            var key = check.getAttribute("id");
+            var intKey = parseInt(key);
+            var currentLetters = activeId[intKey];
+            if (currentLetters == null){
+                activeId[intKey] = [check.parentNode.textContent]
+            }else {
+                currentLetters.push(check.parentNode.textContent);
+            }
+        }
+
+        console.log(activeId);
+        var obj = {problems:activeId};
+        var jsonData = JSON.stringify(obj);
+        console.log(jsonData);
+        var rid = {{.Rid}};
+        var xhr = new XMLHttpRequest;
+        xhr.open('POST', '/api/1/solutions/{{.Rid}}/{{.Sid}}', true);
+        xhr.send(jsonData);
+
+
+    }
+
+
+
+
+</script>
 </body>
 </html>
