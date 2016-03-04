@@ -48,6 +48,12 @@ func apiCreateStudent(w http.ResponseWriter, r *http.Request) {
 	log.Println(student)
 }
 
+func apiCreateSolutions(w http.ResponseWriter, r *http.Request) {
+	data := Body(r).(*models.Solved)
+	log.Println("I am alive!")
+	log.Println(data)
+}
+
 func studentCheckPassword(w http.ResponseWriter, r *http.Request) {
 	student := Body(r).(*models.Student)
 	login := database.CheckPassword(student.Name, student.Password)
@@ -121,6 +127,7 @@ func studentRecitation(w http.ResponseWriter, r *http.Request) {
 func studenSolutions(w http.ResponseWriter, r *http.Request) {
 	ps := context.Get(r, "params").(httprouter.Params)
 	recitationId := ps.ByName("rid")
+	studentId := ps.ByName("id")
 	rid, err := strconv.Atoi(recitationId)
 	if err != nil {
 		panic(err)
@@ -129,7 +136,9 @@ func studenSolutions(w http.ResponseWriter, r *http.Request) {
 
 	renderTemplate(w, "solutions", struct {
 		Data []models.DisplayProblem
-	}{data})
+		Rid  string
+		Sid  string
+	}{data, recitationId, studentId})
 
 }
 func enrollStudent(w http.ResponseWriter, r *http.Request) {
