@@ -28,6 +28,9 @@ func initRoutes() (routes Routes) {
 	routes.Post("Student login", "/api/1/student/login",
 		middleware.Append(BodyHandler(models.Student{})).ThenFunc(studentCheckPassword))
 
+	routes.Post("Student submit solutions", "/api/1/solutions/:rid/:id",
+		middleware.Append(BodyHandler(models.Solved{})).Append(authHandler).ThenFunc(apiCreateSolutions))
+
 	routes.Get("Admin site", "/admin",
 		middleware.ThenFunc(adminIndexHandler))
 	routes.Get("Admin course site", "/admin/course",
