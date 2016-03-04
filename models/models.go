@@ -46,3 +46,7 @@ type DisplayProblem struct {
 type Subproblem struct {
 	Letter string
 }
+
+type Solved struct {
+	Problems map[string][]string `json:"problems"`
+}
