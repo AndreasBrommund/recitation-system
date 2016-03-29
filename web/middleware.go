@@ -7,7 +7,7 @@ import (
 	"reflect"
 	"time"
 
-	"github.com/DavidSkeppstedt/suparAppen/fel"
+	"github.com/DavidSkeppstedt/recitation/fel"
 	"github.com/gorilla/context"
 	"github.com/julienschmidt/httprouter"
 )
