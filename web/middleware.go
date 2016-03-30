@@ -51,7 +51,11 @@ func authHandler(next http.Handler) http.Handler {
 		id := ps.ByName("id")
 		session, err := store.Get(r, id)
 		if err != nil {
-			panic(err)
+			log.Println(err)
+			http.Error(w, http.StatusText(http.StatusUnauthorized),
+				http.StatusUnauthorized)
+			return
+
 		}
 		//here we check if the cookie exists at all..
 		if !session.IsNew {
