@@ -148,7 +148,11 @@ func studenSolutions(w http.ResponseWriter, r *http.Request) {
 func enrollStudent(w http.ResponseWriter, r *http.Request) {
 	ps := context.Get(r, "params").(httprouter.Params)
 	id := ps.ByName("id")
-	courses := database.GetCourses()
+	sid, err := strconv.Atoi(id)
+	if err != nil {
+		panic(err)
+	}
+	courses := database.GetCoursesNotEnrolled(sid)
 	renderTemplate(w, "enroll", struct {
 		Data []models.Course
 		Id   string

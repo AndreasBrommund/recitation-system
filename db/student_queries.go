@@ -53,10 +53,27 @@ func (this *Database) ReadCourseStudent(id int) (courses []models.Course) {
 	return
 }
 
+func (this *Database) GetCoursesNotEnrolled(id int) (courses []models.Course) {
+	rows, err := this.conn.Query("(select name from recitation.course) "+
+		"EXCEPT (SELECT name FROM recitation.course "+
+		"JOIN recitation.takes on id = cid where sid = $1)", id)
+	defer rows.Close()
+	if err != nil {
+		panic(err)
+	}
+
+	for rows.Next() {
+		var tmp models.Course
+		rows.Scan(&tmp.Name)
+		courses = append(courses, tmp)
+	}
+	return
+}
+
 func (this *Database) EnrollStudent(enrollment *models.Enrollment) {
 	for _, value := range enrollment.Courses {
 		_, err := this.conn.Exec("INSERT INTO "+
-			"recitation.takes(cid,sid) VALUES($1,$2);", value,enrollment.Student)
+			"recitation.takes(cid,sid) VALUES($1,$2);", value, enrollment.Student)
 		if err != nil {
 			log.Println("something wrong enrolling student")
 			panic(err)
