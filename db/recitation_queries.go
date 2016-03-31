@@ -6,11 +6,10 @@ import (
 	"github.com/DavidSkeppstedt/recitation/models"
 )
 
-func (this *Database) ReadProblems(rid int) (problems []models.DisplayProblem) {
-	//SELECT * from recitation.problem join recitation.have on pid = id where rid = 34
+func (this *Database) ReadProblems(rid string,cid int) (problems []models.DisplayProblem) {
 
-	rows, err := this.conn.Query("SELECT id,problemid,compulsory from "+
-		"recitation.problem JOIN recitation.have on pid = id where rid = $1", rid)
+	rows, err := this.conn.Query("SELECT problem,compulsory from "+
+		"recitation.problem where recitation = $1 AND cid = $2", rid,cid)
 	if err != nil {
 		panic(err)
 	}
@@ -18,12 +17,11 @@ func (this *Database) ReadProblems(rid int) (problems []models.DisplayProblem) {
 	for rows.Next() {
 		//do something for every problem...
 		var tmp models.DisplayProblem
-		rows.Scan(&tmp.Id, &tmp.ProblemNr, &tmp.Compulsory)
-		//SELECT letter from recitation.subproblem join recitation.belongs on id=spid where pid=37
+		rows.Scan(&tmp.Problem, &tmp.Compulsory)
 
 		//inner query
 		r, err := this.conn.Query("SELECT letter from "+
-			"recitation.subproblem join recitation.belongs on id=spid where pid=$1", tmp.Id)
+			"recitation.subproblem where cid = $1 and recitation = $2 and problem = $3", cid,rid,tmp.Problem)
 
 		if err != nil {
 			log.Println("Subproblems fail")
