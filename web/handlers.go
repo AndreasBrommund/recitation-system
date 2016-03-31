@@ -132,11 +132,13 @@ func studenSolutions(w http.ResponseWriter, r *http.Request) {
 	ps := context.Get(r, "params").(httprouter.Params)
 	recitationId := ps.ByName("rid")
 	studentId := ps.ByName("id")
-	rid, err := strconv.Atoi(recitationId)
+	courseId := ps.ByName("cid")
+	cid, err := strconv.Atoi(courseId)
 	if err != nil {
 		panic(err)
 	}
-	data := database.ReadProblems(rid)
+	log.Println(recitationId)
+	data := database.ReadProblems(recitationId, cid)
 
 	renderTemplate(w, "solutions", struct {
 		Data []models.DisplayProblem
