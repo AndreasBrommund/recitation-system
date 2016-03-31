@@ -60,10 +60,10 @@ func (this *Database) AddRecitation(rec *models.RecitationSub) {
 		panic(transErr)
 	}
 	//Create a recitation row
-	var recitationId int
+	var recitationName int
 	err := transaction.QueryRow("INSERT INTO "+
-		"recitation.recitation(name,track) VALUES($1,$2) RETURNING id;",
-		rec.Name, rec.Track).Scan(&recitationId)
+		"recitation.recitation(cid,name) VALUES($1,$2) RETURNING name;",
+		rec.CourseId, rec.Name).Scan(&recitationName)
 
 	if err != nil {
 		log.Println(err)
@@ -95,53 +95,17 @@ func (this *Database) AddRecitation(rec *models.RecitationSub) {
 			panic(convErr)
 			return
 		}
-		var subids []int
 		for i := 0; i < subtask; i++ {
 			subLetter := string(i + 65)
-			var tmp int
 			err = transaction.QueryRow("INSERT INTO "+
-				"recitation.subproblem(letter) VALUES($1) RETURNING id;", subLetter).Scan(&tmp)
+				"recitation.subproblem(letter) VALUES($1) RETURNING id;", subLetter)
 
 			if err != nil {
 				log.Println("Subproblem", err)
 				transaction.Rollback()
 				panic(err)
 			}
-
-			subids = append(subids, tmp)
 		}
-
-		for _, value := range subids {
-			//Belongs -- Link problems and subproblems...
-			_, err := transaction.Exec("INSERT INTO "+
-				"recitation.belongs(pid,spid) VALUES($1,$2);", tmp, value)
-			if err != nil {
-				log.Println("Could not link problems and subproblems", tmp, value)
-				transaction.Rollback()
-				panic(err)
-			}
-		}
-
-	}
-
-	for _, value := range problemIds {
-		log.Println(value, recitationId)
-		//Have --Link problems and recitation
-		_, err = transaction.Exec("INSERT INTO "+
-			"recitation.have(pid,rid) VALUES ($1,$2)", value, recitationId)
-		if err != nil {
-			log.Println(err)
-			transaction.Rollback()
-			panic(err)
-		}
-	}
-	//Gives -- Link recitation and course
-	_, err = transaction.Exec("INSERT INTO "+
-		"recitation.gives(course,recitation) VALUES($1,$2)", rec.RecitationId, recitationId)
-	if err != nil {
-		log.Println("gives", err)
-		transaction.Rollback()
-		panic(err)
 	}
 
 	//and finally we are done..
