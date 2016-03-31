@@ -8,7 +8,17 @@
 <p>All recitations for {{.CourseName}}</p>
 <ul>
     {{ range $key, $value := .Data }}
-    <li><a href="/student/{{$.StudentId}}/recitations/{{$.CourseId}}/solutions/{{.Name}}">{{ $value.Name}}</a></li>
+    <li>{{ $value.Name}}
+        <ul>
+            {{ range $k,$v := $.Tracks}}
+                <li><a href="/student/{{$.StudentId}}/recitations/{{$.CourseId}}/solutions/{{$value.Name}}/?track={{$k}}">{{ $v }}</li>
+            {{end}}
+
+        </ul>
+
+
+    </li>
+
     {{ end }}
 </ul>
 

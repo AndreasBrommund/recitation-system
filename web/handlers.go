@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"strings"
 	"strconv"
+	"strings"
 
 	"log"
 
@@ -122,12 +122,18 @@ func studentRecitation(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
+	tracks := make(map[int]string)
+	for i := 0; i < course.NumTracks; i++ {
+		tracks[i] = string(i + 65)
+	}
+
 	renderTemplate(w, "recitations_list", struct {
 		Data       []models.Recitation
 		CourseName string
 		CourseId   string
 		StudentId  string
-	}{recitaitons, course.Name, courseId, studentId})
+		Tracks     map[int]string
+	}{recitaitons, course.Name, courseId, studentId, tracks})
 }
 
 func studenSolutions(w http.ResponseWriter, r *http.Request) {
