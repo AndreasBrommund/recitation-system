@@ -17,11 +17,10 @@ type Recitation struct {
 }
 
 type RecitationSub struct {
-	RecitationId int       `json:"course_id"`
-	Name         string    `json:"name"`
-	Track        string    `json:"track"`
-	NrProblems   string    `json:"nr_problems"`
-	Problems     []Problem `json:"problems"`
+	CourseId   int       `json:"course_id"`
+	Name       string    `json:"name"`
+	NrProblems string    `json:"nr_problems"`
+	Problems   []Problem `json:"problems"`
 }
 type Problem struct {
 	Id   int    `json:"id"`

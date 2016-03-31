@@ -9,7 +9,6 @@
 <h1>Recitations for {{.Title}}</h1>
 <form>
     <div><p>Recitation name:</p><input id="name" type="text"/><br/></div>
-    <div><p>Track:</p><input id ='track' type="text"/><br/></div>
     <div><p>Problems:</p><input id ='problems' type="number"/></div>
     <div id = "problems_list">
         <p>Problem</p><br/>
@@ -20,7 +19,7 @@
 <p>List of recitations</p>
 <ul>
     {{ range $key, $value := .Recitations }}
-    <li>{{ $value.Name }},{{$value.Track}}</a></li>
+    <li>{{ $value.Name }}</a></li>
     {{ end }}
 </ul>
 
@@ -34,12 +33,10 @@
     function submitForm() {
         //collect all the data...
         var name = document.getElementById("name").value;
-        var track = document.getElementById("track").value;
         var nrProblems = document.getElementById("problems").value;
         var courseId = {{.Id}};
         var obj = {};
         obj.name = name;
-        obj.track = track;
         obj.nr_problems = nrProblems;
         obj.course_id = courseId;
         var plist = document.getElementById("problems_list");
