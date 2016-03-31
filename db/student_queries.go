@@ -56,7 +56,7 @@ func (this *Database) ReadCourseStudent(id int) (courses []models.Course) {
 func (this *Database) EnrollStudent(enrollment *models.Enrollment) {
 	for _, value := range enrollment.Courses {
 		_, err := this.conn.Exec("INSERT INTO "+
-			"recitation.takes(student,course) VALUES($1,$2);", enrollment.Student, value)
+			"recitation.takes(cid,sid) VALUES($1,$2);", value,enrollment.Student)
 		if err != nil {
 			log.Println("something wrong enrolling student")
 			panic(err)
