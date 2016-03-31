@@ -53,4 +53,5 @@ type Solved struct {
 	Problems       map[string][]string `json:"problems"`
 	RecitationName string              `json:"recitation_name"`
 	Course         int                 `json:"course_id"`
+	Track          int                 `json:"track"`
 }

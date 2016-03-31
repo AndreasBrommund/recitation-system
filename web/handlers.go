@@ -148,12 +148,16 @@ func studenSolutions(w http.ResponseWriter, r *http.Request) {
 	log.Println(recitationId)
 	data := database.ReadProblems(recitationId, cid)
 
+	url := r.URL.Query()
+	track := url.Get("track")
+
 	renderTemplate(w, "solutions", struct {
-		Data []models.DisplayProblem
-		Rid  string
-		Sid  string
-		Cid  int
-	}{data, recitationId, studentId, cid})
+		Data  []models.DisplayProblem
+		Rid   string
+		Sid   string
+		Cid   int
+		Track string
+	}{data, recitationId, studentId, cid, track})
 
 }
 func enrollStudent(w http.ResponseWriter, r *http.Request) {
