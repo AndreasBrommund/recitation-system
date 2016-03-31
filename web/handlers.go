@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"strings"
 	"strconv"
 
 	"log"
@@ -23,6 +24,7 @@ func apiVersion(w http.ResponseWriter, r *http.Request) {
 
 func apiRecitationAdd(w http.ResponseWriter, r *http.Request) {
 	data := Body(r).(*models.RecitationSub)
+	data.Name = strings.Replace(data.Name, " ", "", -1)
 	database.AddRecitation(data)
 }
 
