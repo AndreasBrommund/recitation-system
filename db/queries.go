@@ -44,10 +44,10 @@ func (this *Database) GetRecitations(courseId int) (rec []models.Recitation) {
 	if err != nil {
 		panic(err)
 	}
-
+	defer rows.Close()
 	for rows.Next() {
 		var tmp models.Recitation
-		rows.Scan(&tmp.Id, &tmp.Name, &tmp.Track)
+		rows.Scan(&tmp.Name)
 		rec = append(rec, tmp)
 	}
 	return
