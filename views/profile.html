@@ -9,7 +9,7 @@
 <p>List of coursed that your are enrolled in:</p>
 <ul>
     {{ range $key, $value := .Data }}
-    <li><a href="{{$.StudentId}}/recitations/{{ $value.Id }}">{{ $value.Name}}: {{ $value.CourseId }}</a></li>
+    <li><a href="{{$.StudentId}}/recitations/{{ $value.Id }}">{{ $value.Name}}  </a></li>
     {{ end }}
 </ul>
 
