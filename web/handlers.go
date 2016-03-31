@@ -144,7 +144,8 @@ func studenSolutions(w http.ResponseWriter, r *http.Request) {
 		Data []models.DisplayProblem
 		Rid  string
 		Sid  string
-	}{data, recitationId, studentId})
+		Cid  int
+	}{data, recitationId, studentId, cid})
 
 }
 func enrollStudent(w http.ResponseWriter, r *http.Request) {

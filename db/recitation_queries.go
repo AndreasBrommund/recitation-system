@@ -6,10 +6,10 @@ import (
 	"github.com/DavidSkeppstedt/recitation/models"
 )
 
-func (this *Database) ReadProblems(rid string,cid int) (problems []models.DisplayProblem) {
+func (this *Database) ReadProblems(rid string, cid int) (problems []models.DisplayProblem) {
 
 	rows, err := this.conn.Query("SELECT problem,compulsory from "+
-		"recitation.problem where recitation = $1 AND cid = $2", rid,cid)
+		"recitation.problem where recitation = $1 AND cid = $2", rid, cid)
 	if err != nil {
 		panic(err)
 	}
@@ -21,7 +21,7 @@ func (this *Database) ReadProblems(rid string,cid int) (problems []models.Displa
 
 		//inner query
 		r, err := this.conn.Query("SELECT letter from "+
-			"recitation.subproblem where cid = $1 and recitation = $2 and problem = $3", cid,rid,tmp.Problem)
+			"recitation.subproblem where cid = $1 and recitation = $2 and problem = $3", cid, rid, tmp.Problem)
 
 		if err != nil {
 			log.Println("Subproblems fail")
