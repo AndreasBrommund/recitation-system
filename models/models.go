@@ -40,8 +40,7 @@ type Enrollment struct {
 }
 
 type DisplayProblem struct {
-	Id          int
-	ProblemNr   int
+	Problem     string
 	Compulsory  int
 	Subproblems []Subproblem
 }
