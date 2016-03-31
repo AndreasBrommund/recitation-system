@@ -39,9 +39,9 @@ func (this *Database) ReadStudent(name, password string) (student models.Student
 }
 
 func (this *Database) ReadCourseStudent(id int) (courses []models.Course) {
-	rows, err := this.conn.Query("SELECT id,name,code "+
+	rows, err := this.conn.Query("SELECT name "+
 		"from recitation.course JOIN recitation.takes on "+
-		"id = course WHERE student =$1;", id)
+		"id = cid WHERE sid =$1;", id)
 	if err != nil {
 		panic(err)
 	}
