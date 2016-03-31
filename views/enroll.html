@@ -9,7 +9,7 @@
 
 <form id ="form">
     {{ range $key, $value := .Data }}
-    <input id="{{$value.Id}}" name = "check" type="checkbox">{{ $value.Name}}: {{ $value.CourseId }}</input><br/>
+    <input id="{{$value.Id}}" name = "check" type="checkbox">{{ $value.Name }}</input><br/>
     {{ end }}
     <br/>
     <input type ="submit" id ="button" value ="Enroll"  />
