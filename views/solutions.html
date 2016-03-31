@@ -9,10 +9,10 @@
 <ul>
     <form>
         {{ range $key, $value := .Data }}
-        <li>Problem: {{ $value.ProblemNr}}</li>
+        <li>Problem: {{ $value.Problem}}</li>
             <p>You have to do at least {{$value.Compulsory}} to get points</p>
             {{range $k,$v := $value.Subproblems}}
-                <label><input id = {{$value.Id}} name="check" type="checkbox">{{$v.Letter}}</label>
+                <label><input name="check" type="checkbox">{{$v.Letter}}</label>
                 {{end}}
             </br>
             </br>
