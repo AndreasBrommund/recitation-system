@@ -11,8 +11,8 @@ import (
 func (this *Database) AddCourse(course *models.Course) {
 	var id int
 	err := this.conn.QueryRow("INSERT INTO "+
-		"recitation.course(name,code) VALUES ($1,$2) returning id;",
-		course.Name, course.CourseId).Scan(&id)
+		"recitation.course(name,numtracks) VALUES ($1,$2) returning id;",
+		course.Name, course.NumTracks).Scan(&id)
 	if err != nil {
 		log.Println(err)
 		panic(err)
@@ -21,7 +21,7 @@ func (this *Database) AddCourse(course *models.Course) {
 
 func (this *Database) ReadCourse(id int) (course models.Course) {
 	this.conn.QueryRow("SELECT * from recitation.course "+
-		"WHERE id = $1", id).Scan(&course.Id, &course.Name, &course.CourseId)
+		"WHERE id = $1", id).Scan(&course.Id, &course.Name)
 	return
 }
 
@@ -32,7 +32,7 @@ func (this *Database) GetCourses() (courses []models.Course) {
 	}
 	for rows.Next() {
 		var tmp models.Course
-		rows.Scan(&tmp.Id, &tmp.Name, &tmp.CourseId)
+		rows.Scan(&tmp.Id, &tmp.Name, &tmp.NumTracks)
 		courses = append(courses, tmp)
 	}
 	return

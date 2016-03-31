@@ -28,6 +28,10 @@ func apiRecitationAdd(w http.ResponseWriter, r *http.Request) {
 
 func apiCourseAdd(w http.ResponseWriter, r *http.Request) {
 	course := Body(r).(*models.Course)
+	log.Println(course)
+	if !course.Validate() {
+		panic("Nope")
+	}
 	database.AddCourse(course)
 }
 

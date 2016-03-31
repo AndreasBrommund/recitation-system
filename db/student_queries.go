@@ -47,7 +47,7 @@ func (this *Database) ReadCourseStudent(id int) (courses []models.Course) {
 	}
 	for rows.Next() {
 		var tmp models.Course
-		rows.Scan(&tmp.Id, &tmp.Name, &tmp.CourseId)
+		rows.Scan(&tmp.Id, &tmp.Name)
 		courses = append(courses, tmp)
 	}
 	return

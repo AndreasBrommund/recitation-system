@@ -1,9 +1,13 @@
 package models
 
 type Course struct {
-	Id       int    `json:"id"`
-	Name     string `json:"name"`
-	CourseId string `json:"code"`
+	Id        int    `json:"id"`
+	Name      string `json:"name"`
+	NumTracks int    `json:"tracks"`
+}
+
+func (this *Course) Validate() bool {
+	return this.Name != "" && this.NumTracks > 0
 }
 
 type Recitation struct {
