@@ -39,7 +39,7 @@ func (this *Database) ReadStudent(name, password string) (student models.Student
 }
 
 func (this *Database) ReadCourseStudent(id int) (courses []models.Course) {
-	rows, err := this.conn.Query("SELECT name "+
+	rows, err := this.conn.Query("SELECT name,id "+
 		"from recitation.course JOIN recitation.takes on "+
 		"id = cid WHERE sid =$1;", id)
 	if err != nil {
@@ -47,7 +47,7 @@ func (this *Database) ReadCourseStudent(id int) (courses []models.Course) {
 	}
 	for rows.Next() {
 		var tmp models.Course
-		rows.Scan(&tmp.Name)
+		rows.Scan(&tmp.Name,&tmp.Id)
 		courses = append(courses, tmp)
 	}
 	return
