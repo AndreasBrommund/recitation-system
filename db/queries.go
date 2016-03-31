@@ -60,32 +60,30 @@ func (this *Database) AddRecitation(rec *models.RecitationSub) {
 		panic(transErr)
 	}
 	//Create a recitation row
-	var recitationName int
+	var recitationName string
 	err := transaction.QueryRow("INSERT INTO "+
 		"recitation.recitation(cid,name) VALUES($1,$2) RETURNING name;",
 		rec.CourseId, rec.Name).Scan(&recitationName)
 
 	if err != nil {
-		log.Println(err)
+		log.Println("halla", err)
 		transaction.Rollback()
 		panic(err)
 	}
 
-	var problemIds []int
 	for _, value := range rec.Problems {
-		var tmp int
+		var problem string
 
 		//Create main problem rows
 		err := transaction.QueryRow(
 			"INSERT INTO "+
-				"recitation.problem(problemid,compulsory) VALUES($1,$2) RETURNING id;",
-			value.Id, value.Com).Scan(&tmp)
+				"recitation.problem(cid,recitation,problem,compulsory) VALUES($1,$2,$3,$4) RETURNING problem;",
+			rec.CourseId, recitationName, value.Id, value.Com).Scan(&problem)
 		if err != nil {
-			log.Println(err)
+			log.Println("Hej", err)
 			transaction.Rollback()
 			panic(err)
 		}
-		problemIds = append(problemIds, tmp)
 		//Create sub problem row
 		subtask, convErr := strconv.Atoi(value.Task)
 		if convErr != nil {
@@ -97,8 +95,12 @@ func (this *Database) AddRecitation(rec *models.RecitationSub) {
 		}
 		for i := 0; i < subtask; i++ {
 			subLetter := string(i + 65)
-			err = transaction.QueryRow("INSERT INTO "+
-				"recitation.subproblem(letter) VALUES($1) RETURNING id;", subLetter)
+			_, err = transaction.Exec("INSERT INTO "+
+				"recitation.subproblem(cid,recitation,problem,letter) VALUES($1,$2,$3,$4);",
+				rec.CourseId,
+				recitationName,
+				problem,
+				subLetter)
 
 			if err != nil {
 				log.Println("Subproblem", err)
