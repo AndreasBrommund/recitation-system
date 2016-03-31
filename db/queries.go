@@ -39,9 +39,8 @@ func (this *Database) GetCourses() (courses []models.Course) {
 }
 
 func (this *Database) GetRecitations(courseId int) (rec []models.Recitation) {
-	//SELECT * from recitation.recitation JOIN recitation.gives on id = recitation where course = 5;
-	rows, err := this.conn.Query("SELECT id,name,track FROM "+
-		"recitation.recitation JOIN recitation.gives on id = recitation where course = $1", courseId)
+	rows, err := this.conn.Query("SELECT name FROM "+
+		"recitation.recitation where cid = $1", courseId)
 	if err != nil {
 		panic(err)
 	}
