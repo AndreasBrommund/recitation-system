@@ -11,7 +11,7 @@
     <li>{{ $value.Name}}
         <ul>
             {{ range $k,$v := $.Tracks}}
-                <li><a href="/student/{{$.StudentId}}/recitations/{{$.CourseId}}/solutions/{{$value.Name}}/?track={{$k}}">{{ $v }}</li>
+                <li><a href="/student/{{$.StudentId}}/recitations/{{$.CourseId}}/solutions/{{$value.Name}}/?track={{$k}}">{{ $v }}</a></li>
             {{end}}
 
         </ul>
