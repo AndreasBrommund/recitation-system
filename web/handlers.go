@@ -123,9 +123,9 @@ func studentRecitation(w http.ResponseWriter, r *http.Request) {
 	renderTemplate(w, "recitations_list", struct {
 		Data       []models.Recitation
 		CourseName string
-		CourseId   int
+		CourseId   string
 		StudentId  string
-	}{recitaitons, course.Name, course.Id, studentId})
+	}{recitaitons, course.Name, courseId, studentId})
 }
 
 func studenSolutions(w http.ResponseWriter, r *http.Request) {
