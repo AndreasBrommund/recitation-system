@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/DavidSkeppstedt/recitation/models"
+
 )
 
 func (this *Database) CreateStudent(student *models.Student) (id int) {
@@ -54,8 +55,8 @@ func (this *Database) ReadCourseStudent(id int) (courses []models.Course) {
 }
 
 func (this *Database) GetCoursesNotEnrolled(id int) (courses []models.Course) {
-	rows, err := this.conn.Query("(select name from recitation.course) "+
-		"EXCEPT (SELECT name FROM recitation.course "+
+	rows, err := this.conn.Query("(select id,name from recitation.course) "+
+		"EXCEPT (SELECT id,name FROM recitation.course "+
 		"JOIN recitation.takes on id = cid where sid = $1)", id)
 	defer rows.Close()
 	if err != nil {
@@ -64,7 +65,8 @@ func (this *Database) GetCoursesNotEnrolled(id int) (courses []models.Course) {
 
 	for rows.Next() {
 		var tmp models.Course
-		rows.Scan(&tmp.Name)
+
+		rows.Scan(&tmp.Id,&tmp.Name)
 		courses = append(courses, tmp)
 	}
 	return
