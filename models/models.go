@@ -13,9 +13,10 @@ func (this *Course) Validate() bool {
 }
 
 type Recitation struct {
-	Id    int    `json:"id"`
-	Name  string `json:"name"`
-	Track string `json:"track"`
+	Id     int    `json:"id"`
+	Name   string `json:"name"`
+	Track  string `json:"track"`
+	Points int
 }
 
 type RecitationSub struct {

@@ -138,6 +138,19 @@ func studentRecitation(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
+	sid, err := strconv.Atoi(studentId)
+
+	if err != nil {
+		panic(err)
+	}
+
+	cid, err := strconv.Atoi(courseId)
+	if err != nil {
+		panic(err)
+	}
+
+	database.PointsForRecitation(sid, cid, recitaitons)
+
 	tracks := make(map[int]string)
 	for i := 0; i < course.NumTracks; i++ {
 		tracks[i] = string(i + 65)

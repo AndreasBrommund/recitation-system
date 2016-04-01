@@ -109,3 +109,13 @@ func (this *Database) RegisterTrack(sid int, solved *models.Solved) {
 		panic(err)
 	}
 }
+
+func (this *Database) PointsForRecitation(sid int, cid int, recitaitons []models.Recitation) {
+
+	for i, v := range recitaitons {
+		points := 0
+		this.conn.QueryRow("SELECT points FROM recitation.points WHERE cid=$1 AND recitation =$2 and sid = $3",
+			cid, v.Name, sid).Scan(&points)
+		recitaitons[i].Points = points
+	}
+}
