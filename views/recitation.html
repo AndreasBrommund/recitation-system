@@ -17,9 +17,9 @@
     <div><input id="button" type="button" value="Save"></div>
 </form>
 <p>List of recitations</p>
-<ul>
+<ul id="closeRoot">
     {{ range $key, $value := .Recitations }}
-    <li>{{ $value.Name }}</a></li>
+    <li><input id="{{$value.Name}}" type="button" value = "{{$value.Name}} Close"/></li>
     {{ end }}
 </ul>
 
@@ -28,7 +28,35 @@
         var problem = document.getElementById("problems");
         problem.onchange = calculateProblemRows;
         document.getElementById("button").onclick = submitForm;
+
+
+        var root = document.getElementById("closeRoot");
+        var childs = root.childNodes;
+
+        for (var i = 0; i<childs.length; i++) {
+            if (childs[i].nodeName == "LI") {
+                childs[i].childNodes[0].onclick = closeRecitation;
+            }
+        }
+
+
+
+    };
+
+    function closeRecitation (event) {
+        console.log(event.srcElement);
+        var obj= {};
+        obj.course = {{.Id}};
+        obj.recitation = event.srcElement.getAttribute("id");
+        console.log(JSON.stringify(obj))
+
+        var jsonData = JSON.stringify(obj);
+
+        var xhr = new XMLHttpRequest;
+        xhr.open('POST', '/api/1/recitation/close', true);
+        xhr.send(jsonData);
     }
+
 
     function submitForm() {
         //collect all the data...

@@ -22,6 +22,12 @@ func apiVersion(w http.ResponseWriter, r *http.Request) {
 		}{"Recitation Service", "0.1"})
 }
 
+func apiCloseRecitation(w http.ResponseWriter, r *http.Request) {
+	data := Body(r).(*models.CloseRec)
+	log.Println(data)
+
+}
+
 func apiRecitationAdd(w http.ResponseWriter, r *http.Request) {
 	data := Body(r).(*models.RecitationSub)
 	data.Name = strings.Replace(data.Name, " ", "", -1)

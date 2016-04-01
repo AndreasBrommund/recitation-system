@@ -23,6 +23,9 @@ func initRoutes() (routes Routes) {
 	routes.Post("Add recitation", "/api/1/recitation",
 		middleware.Append(BodyHandler(models.RecitationSub{})).ThenFunc(apiRecitationAdd))
 
+	routes.Post("Close recitation", "/api/1/recitation/close",
+		middleware.Append(BodyHandler(models.CloseRec{})).ThenFunc(apiCloseRecitation))
+
 	routes.Post("Create student", "/api/1/student",
 		middleware.Append(BodyHandler(models.Student{})).ThenFunc(apiCreateStudent))
 	routes.Post("Student login", "/api/1/student/login",

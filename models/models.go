@@ -61,3 +61,8 @@ type Solved struct {
 	Course         int                 `json:"course_id"`
 	Track          int                 `json:"track"`
 }
+
+type CloseRec struct {
+	CourseId       int    `json:"course"`
+	RecitationName string `json:"recitation"`
+}
