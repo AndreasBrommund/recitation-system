@@ -114,3 +114,13 @@ func (this *Database) AddRecitation(rec *models.RecitationSub) {
 	log.Println("We are done...")
 	transaction.Commit()
 }
+
+func (this *Database) CloseRecitation(close *models.CloseRec) {
+	_, err := this.conn.Exec("UPDATE recitation.solved "+
+		"SET points=1"+
+		"WHERE cid = $1 AND recitation = $2", close.CourseId, close.RecitationName)
+
+	if err != nil {
+		panic(err)
+	}
+}

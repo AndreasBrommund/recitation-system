@@ -25,7 +25,7 @@ func apiVersion(w http.ResponseWriter, r *http.Request) {
 func apiCloseRecitation(w http.ResponseWriter, r *http.Request) {
 	data := Body(r).(*models.CloseRec)
 	log.Println(data)
-
+	database.CloseRecitation(data)
 }
 
 func apiRecitationAdd(w http.ResponseWriter, r *http.Request) {
