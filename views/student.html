@@ -53,6 +53,9 @@
                     resp = JSON.parse(xhr.responseText);
                     window.location = "/student/"+resp["id"];
                 }
+                if (xhr.readyState == 4 && xhr.status == 401) {
+                    alert('Wrong password or username')
+                }
             }
         }
         function newUser(event){

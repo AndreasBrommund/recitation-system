@@ -50,6 +50,7 @@ func apiEnrollStudent(w http.ResponseWriter, r *http.Request) {
 
 func apiCreateStudent(w http.ResponseWriter, r *http.Request) {
 	student := Body(r).(*models.Student)
+	student.Format()
 	database.CreateStudent(student)
 	log.Println(student)
 }
@@ -70,6 +71,7 @@ func apiCreateSolutions(w http.ResponseWriter, r *http.Request) {
 
 func studentCheckPassword(w http.ResponseWriter, r *http.Request) {
 	student := Body(r).(*models.Student)
+	student.Format()
 	login := database.CheckPassword(student.Name, student.Password)
 	if login {
 
