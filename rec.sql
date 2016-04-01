@@ -80,7 +80,7 @@ CREATE TABLE problem (
     cid integer NOT NULL,
     recitation text NOT NULL,
     problem text NOT NULL,
-    compulsory text
+    compulsory integer
 );
 
 
@@ -108,8 +108,8 @@ CREATE TABLE solved (
     recitation text NOT NULL,
     problem text NOT NULL,
     letter text NOT NULL,
-    called boolean,
-    points integer
+    called boolean DEFAULT false,
+    points integer DEFAULT 0
 );
 
 
