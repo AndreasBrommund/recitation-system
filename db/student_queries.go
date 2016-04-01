@@ -4,7 +4,6 @@ import (
 	"log"
 
 	"github.com/DavidSkeppstedt/recitation/models"
-
 )
 
 func (this *Database) CreateStudent(student *models.Student) (id int) {
@@ -66,7 +65,7 @@ func (this *Database) GetCoursesNotEnrolled(id int) (courses []models.Course) {
 	for rows.Next() {
 		var tmp models.Course
 
-		rows.Scan(&tmp.Id,&tmp.Name)
+		rows.Scan(&tmp.Id, &tmp.Name)
 		courses = append(courses, tmp)
 	}
 	return
@@ -80,5 +79,25 @@ func (this *Database) EnrollStudent(enrollment *models.Enrollment) {
 			log.Println("something wrong enrolling student")
 			panic(err)
 		}
+	}
+}
+
+func (this *Database) RegisterSolved(sid int, solved *models.Solved) {
+
+	for k, v := range solved.Problems {
+
+		for _, letter := range v {
+			_, err := this.conn.Exec("INSERT INTO "+
+				"recitation.solved(sid,cid,recitation,problem,letter) VALUES($1,$2,$3,$4,$5);",
+				sid,
+				solved.Course,
+				solved.RecitationName,
+				k,
+				letter)
+			if err != nil {
+				panic(err)
+			}
+		}
+
 	}
 }

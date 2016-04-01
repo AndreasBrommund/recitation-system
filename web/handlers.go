@@ -56,8 +56,15 @@ func apiCreateStudent(w http.ResponseWriter, r *http.Request) {
 
 func apiCreateSolutions(w http.ResponseWriter, r *http.Request) {
 	data := Body(r).(*models.Solved)
-	log.Println("I am alive!")
+	ps := context.Get(r, "params").(httprouter.Params)
+	id := ps.ByName("id")
+	sid, err := strconv.Atoi(id)
+	if err != nil {
+		panic(err)
+	}
+	database.RegisterSolved(sid, data)
 	log.Println(data)
+
 }
 
 func studentCheckPassword(w http.ResponseWriter, r *http.Request) {
