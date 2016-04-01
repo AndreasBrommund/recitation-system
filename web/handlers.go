@@ -63,6 +63,7 @@ func apiCreateSolutions(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	database.RegisterSolved(sid, data)
+	database.RegisterTrack(sid, data)
 	log.Println(data)
 
 }

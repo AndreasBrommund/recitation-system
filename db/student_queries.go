@@ -98,6 +98,14 @@ func (this *Database) RegisterSolved(sid int, solved *models.Solved) {
 				panic(err)
 			}
 		}
+	}
+}
 
+func (this *Database) RegisterTrack(sid int, solved *models.Solved) {
+	_, err := this.conn.Exec("INSERT INTO "+
+		"recitation.track(cid,name,sid,track) VALUES($1,$2,$3,$4);",
+		solved.Course, solved.RecitationName, sid, solved.Track)
+	if err != nil {
+		panic(err)
 	}
 }
